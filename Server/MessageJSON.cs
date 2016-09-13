@@ -15,6 +15,7 @@ namespace calyserconnect
 
             public String GetJSON()
             {
+                //
                 MessageJSON myJson = new MessageJSON { Message = "Beep", UUID = "XLM"};
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Serialize(myJson);
