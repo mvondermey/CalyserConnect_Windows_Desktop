@@ -18,10 +18,17 @@ namespace calyserconnect
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Debug.WriteLine("Start Server Thread");
-            Thread serverThread = new Thread(() => new Server());
-            serverThread.Start();
-            Debug.WriteLine("Done Server Thread");
+            /*
+            Debug.WriteLine("Program.Start Server Thread");
+            new Server();
+            Debug.WriteLine("Program.Done Server Thread");
+            */
+            //
+            Debug.WriteLine("Program.Start Client Thread");
+            new Client();
+            Debug.WriteLine("Program.Done Client Thread");
+             //
+            //
         }
     }
 }

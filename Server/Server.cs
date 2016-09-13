@@ -14,12 +14,13 @@ namespace calyserconnect
 {
     class Server
     {
-        static string output = "";
-        byte[] bytesSent;
 
         public Server()
         {
-            StartListening();
+            Debug.WriteLine("Start Server Thread");
+            Thread serverThread = new Thread(StartListening);
+            serverThread.Start();
+            Debug.WriteLine("Done Server Thread");
         }
 
     // Thread signal.
@@ -61,13 +62,17 @@ namespace calyserconnect
             }
 
         } catch (Exception e) {
+            Debug.WriteLine("CalyserConnect.Server.Exception1");
             Console.WriteLine(e.ToString());
         }
     }
-
+//
     public static void AcceptCallback(IAsyncResult ar) {
         Debug.WriteLine("AccetCallback.Start Thread");
-        Thread serverThread = new Thread(() => new SocketTask(ar));
+        // Get the socket that handles the client request.
+        Socket listener = (Socket)ar.AsyncState;
+        Socket handler = listener.EndAccept(ar);
+        Thread serverThread = new Thread(() => new SocketTask(handler));
         serverThread.Start();
         Debug.WriteLine("AcceptCallback.Done Thread");
         allDone.Set();

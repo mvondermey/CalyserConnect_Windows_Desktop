@@ -6,47 +6,58 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
+using System.Threading;
 
 namespace calyserconnect
 {
     class SocketTask
     {
-        public SocketTask(IAsyncResult ar)
+        // Thread signal.
+        public static ManualResetEvent readDone = new ManualResetEvent(false);
+
+        public SocketTask(Socket handler)
         {
 
             Debug.WriteLine("Inside SocketTask");
-
-            // Get the socket that handles the client request.
-            Socket listener = (Socket)ar.AsyncState;
-            Socket handler = listener.EndAccept(ar);
 
             // Create the state object.
             StateObject state = new StateObject();
             state.workSocket = handler;
 
+            //
+
             Debug.WriteLine("Send");
 
-            //for (int i = 10; i < 11; i++)
-            //{
             int ii = 11;
-                Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
-                Send(handler, "I-am-CSync-Windows " + ii + "\n");
-            //}
+            Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
+            Send(handler, "I-am-CSync-Windows " + ii + "\n");
+
+            ii = 100;
+            Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
+            Send(handler, "I-am-CSync-Windows " + ii + "\n");
 
             Debug.WriteLine("Before BeginReceive");
 
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                new AsyncCallback(ReadCallback), state);
+            while (true)
+            {
+                readDone.Reset();
+                //try
+                {
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                    readDone.WaitOne();
+                }
+                //catch (Exception e)
+                //{
+                  //  Debug.WriteLine("Delete");
+                    //Debug.WriteLine(e.ToString());
+                    //return;
+                //}
+            }
 
-            Debug.WriteLine("Send");
 
-            //for (int i = 0; i < 1; i++)
-            //{
-            ii = 100;
-                Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
-                Send(handler, "I-am-CSync-Windows " + ii + "\n");
-            //}
-        //
+
+
         }
         //
         public static void ReadCallback(IAsyncResult ar)
@@ -61,7 +72,18 @@ namespace calyserconnect
             Socket handler = state.workSocket;
 
             // Read data from the client socket. 
-            int bytesRead = handler.EndReceive(ar);
+            int bytesRead = 0;
+            try
+            {
+                bytesRead = handler.EndReceive(ar);
+
+            }catch (Exception e)
+            {
+                Debug.WriteLine("Calyser.SocketTask.Exception1");
+                Debug.WriteLine(e.ToString());
+                readDone.Set();
+                return;
+            }
 
             Debug.WriteLine("After Endreceive");
 
@@ -77,7 +99,12 @@ namespace calyserconnect
 
                 Debug.WriteLine("content "+content);
 
+                
+
             }
+            //          
+            readDone.Set();
+            //
         }
         //
         private static void Send(Socket handler, String data)
