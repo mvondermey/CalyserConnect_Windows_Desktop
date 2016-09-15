@@ -12,13 +12,15 @@ namespace calyserconnect
 
             public String Message { get; set; }
             public String UUID { get; set; }
+            public String Command { get; set; }
 
             public String GetJSON()
             {
                 //
-                MessageJSON myJson = new MessageJSON { Message = "Beep", UUID = "XLM"};
+                //MessageJSON myJson = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "NULL"};
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
-                return serializer.Serialize(myJson);
+                return serializer.Serialize(this);
+            //
             }
     }
 }

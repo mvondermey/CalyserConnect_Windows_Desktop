@@ -23,18 +23,16 @@ namespace calyserconnect
             // Create the state object.
             StateObject state = new StateObject();
             state.workSocket = handler;
-
             //
-
             Debug.WriteLine("Send");
-
-            int ii = 11;
-            Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
-            Send(handler, "I-am-CSync-Windows " + ii + "\n");
-
-            ii = 100;
-            Debug.WriteLine("I-am-CSync-Windows " + ii + "\n");
-            Send(handler, "I-am-CSync-Windows " + ii + "\n");
+            //
+            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "GetDirectoryListing" };
+            //
+            String SendInfo = JSONToSend.GetJSON();
+            //
+            Debug.WriteLine(SendInfo);
+            Send(handler, SendInfo);
+            Send(handler, "\n");
 
             Debug.WriteLine("Before BeginReceive");
 
@@ -55,7 +53,7 @@ namespace calyserconnect
                 //}
             }
 
-
+            Debug.WriteLine("After BeginReceive");
 
 
         }
@@ -81,7 +79,7 @@ namespace calyserconnect
             {
                 Debug.WriteLine("Calyser.SocketTask.Exception1");
                 Debug.WriteLine(e.ToString());
-                readDone.Set();
+                //readDone.Set();
                 return;
             }
 
@@ -97,13 +95,11 @@ namespace calyserconnect
                 // more data.
                 content = state.sb.ToString();
 
-                Debug.WriteLine("content "+content);
-
-                
+                Debug.WriteLine("content "+content); 
 
             }
             //          
-            readDone.Set();
+            //readDone.Set();
             //
         }
         //

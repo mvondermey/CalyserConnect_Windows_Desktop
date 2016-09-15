@@ -71,7 +71,7 @@ namespace calyserconnect {
                     client.BeginConnect(IPaddresses,port,
                         new AsyncCallback(ConnectCallback), client);
                     allDone.WaitOne();
-                    Debug.WriteLine("Connected...");
+                    //Debug.WriteLine("Connected...");
 
             }
             catch (Exception e)
@@ -100,7 +100,7 @@ namespace calyserconnect {
             Thread serverThread = new Thread(() => new SocketTask(client));
             serverThread.Start();
             Debug.WriteLine("ConnectCallback.Done Thread");
-            allDone.Set();
+            //allDone.Set();
         }
 
     }
