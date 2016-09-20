@@ -9,18 +9,23 @@ namespace calyserconnect
 {
     class MessageJSON
     {
-
+        //
+            public String TimeStamp { get; set; }
             public String Message { get; set; }
             public String UUID { get; set; }
             public String Command { get; set; }
 
+        //
             public String GetJSON()
             {
-                //
-                //MessageJSON myJson = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "NULL"};
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                return serializer.Serialize(this);
             //
+            DateTime baseDate = new DateTime(1970, 1, 1);
+            TimeSpan diff = DateTime.Now - baseDate;
+            this.TimeStamp = diff.Milliseconds.ToString();
+            //
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Serialize(this);
+                //
             }
     }
 }
