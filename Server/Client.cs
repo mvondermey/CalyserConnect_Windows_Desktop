@@ -100,7 +100,7 @@ namespace calyserconnect {
             Thread serverThread = new Thread(() => new SocketTask(client));
             serverThread.Start();
             Debug.WriteLine("ConnectCallback.Done Thread");
-            //allDone.Set();
+            allDone.Set();
         }
 
     }

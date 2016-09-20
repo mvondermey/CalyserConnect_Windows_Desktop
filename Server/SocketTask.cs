@@ -31,25 +31,29 @@ namespace calyserconnect
             String SendInfo = JSONToSend.GetJSON();
             //
             Debug.WriteLine(SendInfo);
-            Send(handler, SendInfo);
-            Send(handler, "\n");
+            Send(handler, SendInfo+"\n");
 
             Debug.WriteLine("Before BeginReceive");
 
+            int count = 0;
+
             while (true)
             {
+
+                count++;
+
                 readDone.Reset();
                 //try
                 {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
-                    readDone.WaitOne();
+                    //Read(handler,state);
+                    Send(handler, SendInfo + "\n");
+
                 }
                 //catch (Exception e)
                 //{
-                  //  Debug.WriteLine("Delete");
-                    //Debug.WriteLine(e.ToString());
-                    //return;
+                //  Debug.WriteLine("Delete");
+                //Debug.WriteLine(e.ToString());
+                //return;
                 //}
             }
 
@@ -63,12 +67,12 @@ namespace calyserconnect
             String content = String.Empty;
 
             Debug.WriteLine("Inside ReadCallback");
-
+            //
             // Retrieve the state object and the handler socket
             // from the asynchronous state object.
             StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
-
+            //
             // Read data from the client socket. 
             int bytesRead = 0;
             try
@@ -79,12 +83,12 @@ namespace calyserconnect
             {
                 Debug.WriteLine("Calyser.SocketTask.Exception1");
                 Debug.WriteLine(e.ToString());
-                //readDone.Set();
+                readDone.Set();
                 return;
             }
-
+            //
             Debug.WriteLine("After Endreceive");
-
+            //
             if (bytesRead > 0)
             {
                 // There  might be more data, so store the data received so far.
@@ -94,19 +98,30 @@ namespace calyserconnect
                 // Check for end-of-file tag. If it is not there, read 
                 // more data.
                 content = state.sb.ToString();
+                state.sb.Clear();
 
-                Debug.WriteLine("content "+content); 
-
+                Debug.WriteLine("content "+content+" Done content"); 
+//
             }
             //          
-            //readDone.Set();
+            readDone.Set();
             //
+        }
+        //
+        private static void Read(Socket handler,StateObject state)
+        {
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+            new AsyncCallback(ReadCallback), state);
+            readDone.WaitOne();
         }
         //
         private static void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+
+            Debug.WriteLine("Sending data"+data);
 
             // Begin sending the data to the remote device.
             handler.BeginSend(byteData, 0, byteData.Length, 0,
