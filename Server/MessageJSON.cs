@@ -19,9 +19,9 @@ namespace calyserconnect
             public String GetJSON()
             {
             //
-            DateTime baseDate = new DateTime(1970, 1, 1);
-            TimeSpan diff = DateTime.Now - baseDate;
-            this.TimeStamp = diff.Milliseconds.ToString();
+            
+            TimeSpan diff = DateTime.Now - new DateTime(1970, 1, 1);
+            this.TimeStamp = diff.TotalMilliseconds.ToString();
             //
             JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Serialize(this);

@@ -27,7 +27,7 @@ namespace calyserconnect
             //
             Debug.WriteLine("Send");
             //
-            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "GetDirectoryListing" };
+            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "GetTopDirectoryListing" };
             //
             String SendInfo = JSONToSend.GetJSON();
             //
@@ -38,7 +38,7 @@ namespace calyserconnect
 
             int count = 0;
 
-            while (count < 30)
+            while (true)
             {
 
                 count++;
@@ -47,7 +47,7 @@ namespace calyserconnect
                 //try
                 {
                     Read(handler,state);
-                    //Send(handler, SendInfo);
+                    if (count < 30) Send(handler, SendInfo);
 
                 }
                 //catch (Exception e)
@@ -88,7 +88,7 @@ namespace calyserconnect
                 return;
             }
             //
-            Debug.WriteLine("After Endreceive");
+            Debug.WriteLine("After Endreceive\n");
             //
             if (bytesRead > 0)
             {
@@ -106,7 +106,7 @@ namespace calyserconnect
                     // client. Display it on the console.
                     //                   
                     state.sb.Clear();
-                    Debug.WriteLine("content " + content+ " Done content\n");
+                    Debug.WriteLine("***********content \n" + content+ "\n ************* Done content");
                     //
                 } else {
                     // Not all data received. Get more.
@@ -132,11 +132,14 @@ namespace calyserconnect
         //
         private static void Send(Socket handler, String data)
         {
+            // Add begin and end of file
+            //
+            data = "<BOF>" + data + "<EOF>";
+            //
             // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-
-            Debug.WriteLine("Sending data"+data);
+            //
+            Debug.WriteLine("Sending data "+data);
 
             writeDone.Reset();
             // Begin sending the data to the remote device.
