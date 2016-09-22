@@ -47,7 +47,7 @@ namespace calyserconnect
                 //try
                 {
                     Read(handler,state);
-                    if (count < 30) Send(handler, SendInfo);
+                    if (count < 10) Send(handler, SendInfo);
 
                 }
                 //catch (Exception e)
