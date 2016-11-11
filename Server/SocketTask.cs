@@ -15,7 +15,7 @@ namespace calyserconnect
         // Thread signal.
         public static ManualResetEvent readDone = new ManualResetEvent(false);
         public static ManualResetEvent writeDone = new ManualResetEvent(false);
-
+        //
         public SocketTask(Socket handler)
         {
 
