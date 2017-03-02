@@ -12,7 +12,7 @@ namespace calyserconnect
         public BroadcastReceiver() { 
         //
         var Server = new System.Net.Sockets.UdpClient(8003);
-        var ResponseData = Encoding.ASCII.GetBytes("SomeResponseData");
+        var ResponseData = Encoding.ASCII.GetBytes("Hello back");
             //
             Console.WriteLine("Wait for connection on port "+8003);
             //

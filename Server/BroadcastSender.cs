@@ -15,7 +15,7 @@ namespace calyserconnect
             var ServerEp = new System.Net.IPEndPoint(System.Net.IPAddress.Any, 0);
 
             Client.EnableBroadcast = true;
-            Client.Send(RequestData, RequestData.Length, new System.Net.IPEndPoint(System.Net.IPAddress.Broadcast, 8888));
+            Client.Send(RequestData, RequestData.Length, new System.Net.IPEndPoint(System.Net.IPAddress.Broadcast, 8003));
 
             var ServerResponseData = Client.Receive(ref ServerEp);
             var ServerResponse = Encoding.ASCII.GetString(ServerResponseData);
