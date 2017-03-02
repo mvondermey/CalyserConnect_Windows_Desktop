@@ -27,29 +27,29 @@ namespace calyserconnect
             //
             Debug.WriteLine("Send");
             //
-            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "GetTopDirectoryListing" };
+            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "" };
             //
             String SendInfo = JSONToSend.GetJSON();
             //
             Debug.WriteLine(SendInfo);
             Send(handler, SendInfo+"\n");
-
+            //
             Debug.WriteLine("Before BeginReceive");
-
+            //
             int count = 0;
-
+            //
             while (true)
             {
-
                 count++;
-
-                
+                //                   
                 //try
+                //
                 {
                     Read(handler,state);
-                    if (count < 10) Send(handler, SendInfo);
+                    //Send(handler, SendInfo);
 
                 }
+                //
                 //catch (Exception e)
                 //{
                 //  Debug.WriteLine("Delete");
@@ -57,10 +57,9 @@ namespace calyserconnect
                 //return;
                 //}
             }
-
+            //
             Debug.WriteLine("After BeginReceive");
-
-
+            //
         }
         //
         public static void ReadCallback(IAsyncResult ar)

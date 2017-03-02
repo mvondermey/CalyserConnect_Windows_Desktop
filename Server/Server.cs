@@ -33,9 +33,18 @@ namespace calyserconnect
         // Establish the local endpoint for the socket.
         // The DNS name of the computer
         // running the listener is "host.contoso.com".
-        IPHostEntry ipHostInfo = Dns.Resolve("localhost");
-        IPAddress ipAddress = ipHostInfo.AddressList[0];
-        Debug.WriteLine("ipAdsress "+ipAddress);
+        IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+        IPAddress ipAddress=null;
+            //
+            foreach (var ipA in ipHostInfo.AddressList)
+                if (ipA.AddressFamily != AddressFamily.InterNetworkV6 && ipA.ToString().IndexOf("10.") >= 0)
+                {
+                    Console.WriteLine("IP Address: {0}", ipA);
+                    ipAddress = ipA;
+                }
+         //
+
+        Debug.WriteLine("ipAddress "+ipAddress);
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 8081);
 
         // Create a TCP/IP socket.
