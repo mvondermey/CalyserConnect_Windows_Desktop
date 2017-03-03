@@ -12,7 +12,12 @@ namespace calyserconnect
         public BroadcastReceiver() { 
         //
         var Server = new System.Net.Sockets.UdpClient(8003);
-        var ResponseData = Encoding.ASCII.GetBytes("Hello back");
+            //
+            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "" };
+            //
+            String SendInfo = JSONToSend.GetJSON();
+            //
+            var ResponseData = Encoding.ASCII.GetBytes(SendInfo);
             //
             Console.WriteLine("Wait for connection on port "+8003);
             //
