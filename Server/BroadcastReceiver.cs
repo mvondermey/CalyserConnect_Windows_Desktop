@@ -9,11 +9,11 @@ namespace calyserconnect
     class BroadcastReceiver
     {
         //
-        public BroadcastReceiver() { 
+        public BroadcastReceiver(System.Net.Sockets.UdpClient Server) { 
         //
-        var Server = new System.Net.Sockets.UdpClient(8003);
+        //var Server = new System.Net.Sockets.UdpClient(8003);
             //
-            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", UUID = "XLM", Command = "" };
+            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", Command = "" };
             //
             String SendInfo = JSONToSend.GetJSON();
             //
@@ -29,7 +29,7 @@ namespace calyserconnect
                 var ClientRequest = Encoding.ASCII.GetString(ClientRequestData);
                 //
                 Console.WriteLine("Received {0} from {1}, sending response", ClientRequest, ClientEp.Address.ToString());
-                Server.Send(ResponseData, ResponseData.Length, ClientEp);
+                //Server.Send(ResponseData, ResponseData.Length, ClientEp);
                 //
             }
       }

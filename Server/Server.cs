@@ -43,7 +43,6 @@ namespace calyserconnect
                     ipAddress = ipA;
                 }
          //
-
         Debug.WriteLine("ipAddress "+ipAddress);
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 8081);
 
