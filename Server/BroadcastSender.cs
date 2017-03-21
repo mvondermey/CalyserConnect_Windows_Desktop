@@ -12,11 +12,7 @@ namespace calyserconnect
 
         public BroadcastSender(System.Net.Sockets.UdpClient Client)
         {
-            MessageJSON JSONToSend = new MessageJSON { Message = "Beep", Command = "" };
-            //
-            String SendInfo = JSONToSend.GetJSON();
-            //
-            var RequestData = Encoding.ASCII.GetBytes(SendInfo);
+
             var ServerEp = new System.Net.IPEndPoint(System.Net.IPAddress.Any, 0);
 
             //Client = new System.Net.Sockets.UdpClient(8003);
@@ -24,6 +20,13 @@ namespace calyserconnect
             Client.EnableBroadcast = true;
             while (true)
             {
+                //
+                MessageJSON JSONToSend = new MessageJSON { Message = "Beep", Command = "" };
+                //
+                String SendInfo = JSONToSend.GetJSON();
+                //
+                var RequestData = Encoding.ASCII.GetBytes(SendInfo);
+                //
                 Client.Send(RequestData, RequestData.Length, new System.Net.IPEndPoint(System.Net.IPAddress.Broadcast, 8003));
                 Console.WriteLine("broadcastSender.Sent to "+System.Net.IPAddress.Broadcast);
                 /*
